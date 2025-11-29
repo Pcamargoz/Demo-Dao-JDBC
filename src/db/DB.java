@@ -3,11 +3,8 @@ package db;
 import javax.swing.*;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.Properties;
-import java.sql.Connection;
 
 public class DB {
     // tudo para gerar uma conexão com o banco de dados
@@ -58,6 +55,15 @@ public class DB {
         if (st != null) {
             try {
                 st.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    public static void closeResultSet(ResultSet rs) {
+        if (rs != null) {
+            try {
+                rs.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
