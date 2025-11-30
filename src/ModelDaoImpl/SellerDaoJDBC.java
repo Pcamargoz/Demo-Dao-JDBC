@@ -6,10 +6,7 @@ import ModelEntities.Seller;
 import db.DB;
 import db.DbException;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +22,44 @@ public class SellerDaoJDBC implements SellerDao {
 
     @Override
     public void insert(Seller obj) {
+        PreparedStatement st = null;
+        try{
+            st = conn.prepareStatement(
+                    "INSERT INTO seller "
+                    + "(Name, Email, BirthDate, BaseSalary, DepartmentId) "
+                    +"VALUES "
+                    +"(?, ?, ?, ?, ?) ",
+                    Statement.RETURN_GENERATED_KEYS);
 
+            st.setString(1,obj.getName());
+            st.setString(2,obj.getEmail());
+            // Instanciando uma data
+            st.setDate(3,new java.sql.Date(obj.getBirthDate().getTime()));
+            st.setDouble(4,obj.getBaseSalary());
+            // a partir do departamento ele pega o id
+            st.setInt(5,obj.getDepartment().getId());
+            int rowsAffected = st.executeUpdate();
+            if(rowsAffected > 0 ){
+                // ele esta pegando a chave que o proprio banco da , quando e inserido alguem
+                ResultSet rs = st.getGeneratedKeys();
+                if(rs.next()){
+                    // e aqui ele pega o item gerado na primeira coluna que no caso sera o id
+                    int id = rs.getInt(1);
+                    // e adiciona a entidade id do seller aqui 
+                    obj.setId(id);
+                }
+                DB.closeResultSet(rs);
+            }
+            else{
+                throw new DbException("Erro inesperado , nenhumna linha afetada");
+            }
+        }catch (SQLException e){
+            // passando a mensagem da exceção original
+            throw new DbException(e.getMessage());
+        }
+        finally {
+            DB.closeStatement(st);
+        }
     }
 
     @Override

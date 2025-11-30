@@ -5,6 +5,7 @@ import ModelDao.SellerDao;
 import ModelEntities.Department;
 import ModelEntities.Seller;
 
+import java.util.Date;
 import java.util.List;
 
 public class Program {
@@ -25,5 +26,11 @@ public class Program {
         for(Seller obj : list){
             System.out.println(obj);
         }
+        // inserindo alguem no banco de Dados
+        System.out.println("\n=== Test 4: seller Insert =====");
+        Seller newSeller = new Seller(null, "Greg", "Greg@gmail.com", new Date(), 4000.0,department);
+        sellerDao.insert(newSeller);
+        System.out.println("Inserted! New Id = " + newSeller.getId());
+
     }
 }
