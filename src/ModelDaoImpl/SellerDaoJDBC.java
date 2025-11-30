@@ -45,7 +45,7 @@ public class SellerDaoJDBC implements SellerDao {
                 if(rs.next()){
                     // e aqui ele pega o item gerado na primeira coluna que no caso sera o id
                     int id = rs.getInt(1);
-                    // e adiciona a entidade id do seller aqui 
+                    // e adiciona a entidade id do seller aqui
                     obj.setId(id);
                 }
                 DB.closeResultSet(rs);
@@ -64,7 +64,31 @@ public class SellerDaoJDBC implements SellerDao {
 
     @Override
     public void update(Seller obj) {
+        PreparedStatement st = null;
+        try{
+            st = conn.prepareStatement(
+                    "UPDATE seller "
+                        +"SET Name = ?, Email = ?, BirthDate = ?, BaseSalary = ?, DepartmentId = ? "
+                        + "WHERE Id = ? ");
 
+            st.setString(1,obj.getName());
+            st.setString(2,obj.getEmail());
+            // Instanciando uma data
+            st.setDate(3,new java.sql.Date(obj.getBirthDate().getTime()));
+            st.setDouble(4,obj.getBaseSalary());
+            // a partir do departamento ele pega o id
+            st.setInt(5,obj.getDepartment().getId());
+
+            st.executeUpdate();
+
+            }
+        catch (SQLException e){
+            // passando a mensagem da exceção original
+            throw new DbException(e.getMessage());
+        }
+        finally {
+            DB.closeStatement(st);
+        }
     }
 
     @Override

@@ -32,5 +32,13 @@ public class Program {
         sellerDao.insert(newSeller);
         System.out.println("Inserted! New Id = " + newSeller.getId());
 
+        System.out.println("\n=== Test 5: Seller Update =====");
+        // vai achar alguem com o id que queremos
+        seller = sellerDao.findById(1);
+        seller.setName("Martha Waine");
+        // e confirmando a alteração com o update
+        sellerDao.update(seller);
+        System.out.println("Update Completed");
+
     }
 }
