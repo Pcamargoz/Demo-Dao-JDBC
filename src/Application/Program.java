@@ -11,6 +11,7 @@ public class Program {
     static void main() {
         // puxando o factory que esconde o que esta sendo implementado
         SellerDao sellerDao = DaoFactory.createSellerDao();
+        System.out.println("=== Test number 1: findbyid Seller ===");
         Seller seller = sellerDao.findById(3);
         System.out.println(seller);
     }
