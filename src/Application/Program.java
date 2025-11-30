@@ -7,9 +7,11 @@ import ModelEntities.Seller;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
 
 public class Program {
     static void main() {
+        Scanner sc = new Scanner(System.in);
         SellerDao sellerDao = DaoFactory.createSellerDao();
         System.out.println(" === Test 1: Seller findById ====");
         Seller seller = sellerDao.findById(3);
@@ -27,18 +29,26 @@ public class Program {
             System.out.println(obj);
         }
         // inserindo alguem no banco de Dados
-        System.out.println("\n=== Test 4: seller Insert =====");
+        /*System.out.println("\n=== Test 4: seller Insert =====");
         Seller newSeller = new Seller(null, "Greg", "Greg@gmail.com", new Date(), 4000.0,department);
         sellerDao.insert(newSeller);
-        System.out.println("Inserted! New Id = " + newSeller.getId());
+        System.out.println("Inserted! New Id = " + newSeller.getId());*/
 
-        System.out.println("\n=== Test 5: Seller Update =====");
+        /*System.out.println("\n=== Test 5: Seller Update =====");
         // vai achar alguem com o id que queremos
         seller = sellerDao.findById(1);
         seller.setName("Martha Waine");
         // e confirmando a alteração com o update
         sellerDao.update(seller);
-        System.out.println("Update Completed");
+        System.out.println("Update Completed");*/
+
+        System.out.println("\n=== Test 6: Seller Delete =====");
+        System.out.println("Enter Id For Delete: ");
+        int id = sc.nextInt();
+        sellerDao.deleteById(id);
+        System.out.println("Delete completed");
+
+        sc.close();
 
     }
 }
